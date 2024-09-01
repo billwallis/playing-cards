@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "resources",
+  "description": "Resource specification for database resources.",
+  "type": "object",
+  "propertyNames": {
+    "enum": ["club", "diamond", "heart", "spade"]
+  },
+  "patternProperties": {
+    ".*": {
+      "type": "object",
+      "properties": {
+        "_name": {
+          "type": "string",
+          "description": "The name of the Python enum."
+        },
+        "_value": {
+          "type": "string",
+          "description": "The value of the Python enum."
+        },
+        "id": {
+          "type": "string",
+          "description": "A single character identifier for the suit.",
+          "minLength": 1,
+          "maxLength": 1
+        },
+        "image": {
+          "type": "string",
+          "description": "An ASCII character for the suit's 'image'.",
+          "minLength": 1,
+          "maxLength": 1
+        },
+        "colour": {
+          "type": "string",
+          "description": "The colour of the suit.",
+          "enum": ["black", "red"]
+        }
+      },
+      "required": ["_name", "_value", "id", "image", "colour"],
+      "additionalProperties": false
+    }
+  }
+}

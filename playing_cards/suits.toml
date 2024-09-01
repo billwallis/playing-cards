@@ -8,12 +8,12 @@ id = "C"
 image = "♣"
 colour = "black"
 
-[spade]
-_name = "SPADE"
-_value = "spade"
-id = "S"
-image = "♠"
-colour = "black"
+[diamond]
+_name = "DIAMOND"
+_value = "diamond"
+id = "D"
+image = "♦"
+colour = "red"
 
 [heart]
 _name = "HEART"
@@ -22,9 +22,9 @@ id = "H"
 image = "♥"
 colour = "red"
 
-[diamond]
-_name = "DIAMOND"
-_value = "diamond"
-id = "D"
-image = "♦"
-colour = "red"
+[spade]
+_name = "SPADE"
+_value = "spade"
+id = "S"
+image = "♠"
+colour = "black"
