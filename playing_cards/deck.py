@@ -193,50 +193,35 @@ class Card:
 
 class Deck:
     """
-    A class to represent a multiple sets of 52-card French-suited deck that
-    may or may not have all cards in them.
-
-    This name is a misnomer, since it can actually be many sets of decks
-    (where "deck" means a set of 52 cards).
+    A set of 52-card French-suited playing cards.
     """
 
-    _num_decks: int
     cards: list[Card]
 
-    def __init__(self, num_decks: int = 1):
+    def __init__(self):
         """
-        Return a ``Deck`` with ``num_decks`` decks in it.
-
-        :param num_decks: The number of 52-card decks to include.
+        Return a ``Deck`` with 52 cards.
         """
-        self._num_decks = num_decks
         self.cards = []
         self.reset()
 
-    def __str__(self):
-        s = (
-            "" if len(self) == 1 else "s"
-        )  # sourcery skip: avoid-single-character-names-variables
-        return f"Deck consisting of {len(self)} card{s}"
-
     def __repr__(self):
-        return f"Deck(num_decks={self._num_decks})"
+        return "Deck()"
 
     def __len__(self):
         return len(self.cards)
 
-    def __getitem__(self, position):
+    def __getitem__(self, position: int):
         return self.cards[position]
 
     def reset(self) -> None:
         """
         Reset the deck to have all cards in it, then shuffle it.
         """
+        rank: Rank  # noqa: F842
+        suit: Suit  # noqa: F842
         self.cards = [
-            Card(rank, suit)
-            for _, rank, suit in itertools.product(
-                range(self._num_decks), Rank, Suit
-            )
+            Card(rank, suit) for rank, suit in itertools.product(Rank, Suit)
         ]
 
         self.shuffle()
@@ -247,28 +232,30 @@ class Deck:
         """
         random.shuffle(self.cards)
 
-    def take_card(self, _key: str = None) -> Card:
+    def take_card(self, _id: str | None = None, /) -> Card:
         """
         Return the top card from the deck.
 
-        :param _key: The key of the card to take.
+        :param _id: The key of the card to take instead of the top card.
 
-        :return: A list of the taken cards.
+        :return: The card taken from the deck.
+
+        :raises IndexError: If the deck is empty.
         """
-        return self._take_card_by_key(_key) if _key else self.cards.pop()
+        return self._take_card_by_id(_id) if _id else self.cards.pop()
 
-    def _take_card_by_key(self, key: str) -> Card:
+    def _take_card_by_id(self, id_: str) -> Card:
         """
-        Pop the card from the deck whose key corresponds to ``key``.
+        Pop the card ``id_`` from the deck.
 
-        This is just for debugging and testing.
+        :param id_: The ID of the card to take.
 
-        :param key: The key of the card to take.
+        :return: The card taken from the deck.
 
-        :raises IndexError: If the card has already been removed from the deck.
-
-        :return: A list of cards corresponding to the key.
+        :raises KeyError: If the card has already been removed from the deck.
         """
         for i, card in enumerate(self.cards):
-            if str(card) == key:
+            if str(card) == id_:
                 return self.cards.pop(i)
+
+        raise KeyError(f"The card with key '{id_}' is not in the deck")

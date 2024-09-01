@@ -7,38 +7,36 @@ import pytest
 from playing_cards import Card, Deck, Rank, Suit
 
 
-###
-# Deck tests
-###
-def test__deck():
+def test__deck__can_be_initialised():
     """
-    Test the construction of the ``Deck`` class.
+    Test that decks can be initialised.
     """
-    deck_1 = Deck()
-    deck_2 = Deck(num_decks=2)
-
-    assert deck_1._num_decks == 1
-    assert deck_2._num_decks == 2
-    assert str(deck_1) == "Deck consisting of 52 cards"
-    assert str(deck_2) == "Deck consisting of 104 cards"
-    assert repr(deck_1) == f"Deck(num_decks={deck_1._num_decks})"
-    assert repr(deck_2) == f"Deck(num_decks={deck_2._num_decks})"
-    assert len(deck_1) == 52
-    assert len(deck_2) == 104
-    assert type(deck_1[0]) is Card
-    assert type(deck_2[0]) is Card
+    deck = Deck()
+    assert len(deck) == 52
+    assert type(deck[0]) is Card
+    assert repr(deck) == "Deck()"
 
 
-def test__deck__take_card():
+def test__deck__taking_a_card_makes_the_deck_smaller():
     """
-    Test the ``Deck.take_card()`` method.
+    Test that taking a card from the deck makes it smaller.
     """
-    deck_ = Deck()
-    assert len(deck_) == 52
-    card = deck_.take_card()
-    assert len(deck_) == 51
+    deck = Deck()
+    card = deck.take_card()
+    assert len(deck) == 51
     assert type(card) is Card
-    assert card not in deck_
+    assert card not in deck
+
+
+def test__deck__card_cannot_be_taken_from_empty_deck():
+    """
+    Test that taking a card from an empty deck raises an error.
+    """
+    deck = Deck()
+    [deck.take_card() for _ in range(52)]
+
+    with pytest.raises(IndexError):
+        deck.take_card()
 
 
 @pytest.mark.parametrize(
@@ -50,34 +48,34 @@ def test__deck__take_card():
         ("KD", Card(Rank.KING, Suit.DIAMOND)),
     ],
 )
-def test__deck__take_card_by_key(key: str, card: Card):
+def test__deck__cards_can_be_taken_by_id(key: str, card: Card):
     """
-    Test the ``Deck._take_card_by_key()`` method.
+    Test that cards can be taken by ID.
     """
-    deck_ = Deck()
-    taken_card = deck_._take_card_by_key(key)
-    assert len(deck_) == 51
+    deck = Deck()
+    taken_card = deck.take_card(key)
+    assert len(deck) == 51
     assert taken_card == card
-    assert taken_card not in deck_
+    assert taken_card not in deck
 
 
-@pytest.mark.parametrize(
-    "key, card",
-    [
-        ("AC", Card(Rank.ACE, Suit.CLUB)),
-        ("2S", Card(Rank.TWO, Suit.SPADE)),
-        ("TH", Card(Rank.TEN, Suit.HEART)),
-        ("KD", Card(Rank.KING, Suit.DIAMOND)),
-    ],
-)
-def test__deck__take_card_by_key__multiple_decks(key: str, card: Card):
+def test__deck__card_cannot_be_taken_by_id_if_it_is_not_in_the_deck():
     """
-    Test the ``Deck._take_card_by_key()`` method on multiple decks.
+    Test that cards cannot be taken by ID if they are not in the deck.
     """
-    deck_ = Deck(num_decks=3)
-    taken_card_1 = deck_._take_card_by_key(key)
-    taken_card_2 = deck_._take_card_by_key(key)
-    taken_card_3 = deck_._take_card_by_key(key)
-    assert len(deck_) == (52 * 3) - 3
-    assert taken_card_1 == taken_card_2 == taken_card_3 == card
-    assert taken_card_1 not in deck_
+    deck = Deck()
+    deck.take_card("AS")
+    with pytest.raises(KeyError):
+        deck.take_card("AS")
+
+
+def test__deck__can_be_reset():
+    """
+    Test that decks can be reset.
+    """
+    deck = Deck()
+    [deck.take_card() for _ in range(10)]
+    assert len(deck) == 42
+
+    deck.reset()
+    assert len(deck) == 52
