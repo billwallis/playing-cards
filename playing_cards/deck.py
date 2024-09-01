@@ -23,29 +23,25 @@ from typing import Any, Literal
 
 Colour = Literal["black", "red"]
 
-_SUITS: dict[str, dict[str, str]] = tomllib.loads(
+SUITS: dict[str, dict[str, str]] = tomllib.loads(
     pathlib.Path("playing_cards/suits.toml").read_text(encoding="utf-8")
 )
-_RANKS: dict[str, dict[str, str]] = tomllib.loads(
+RANKS: dict[str, dict[str, str]] = tomllib.loads(
     pathlib.Path("playing_cards/ranks.toml").read_text(encoding="utf-8")
 )
 
 
-@functools.total_ordering
 class Suit(enum.StrEnum):
     """
     A suit for a playing card.
     """
 
-    CLUB = enum.auto()
-    SPADE = enum.auto()
-    HEART = enum.auto()
-    DIAMOND = enum.auto()
+    CLUB = "club"
+    SPADE = "spade"
+    HEART = "heart"
+    DIAMOND = "diamond"
 
-    def __init__(self, *args, **kwargs):  # noqa: signature required for __new__
-        assert self._get("_name")
-        assert self._get("_value")
-
+    @functools.total_ordering
     def __lt__(self, other: Suit) -> bool:
         order = {
             Suit.CLUB: 0,
@@ -59,7 +55,7 @@ class Suit(enum.StrEnum):
         """
         Return the value of the key.
         """
-        return _SUITS[self.value][_key]  # type: ignore
+        return SUITS[self.value][_key]  # type: ignore
 
     @classmethod
     def from_id(cls, _id: str, /) -> Suit:
@@ -68,7 +64,7 @@ class Suit(enum.StrEnum):
 
         :raises KeyError: If the key does not correspond to a valid suit.
         """
-        for suit, properties in _SUITS.items():
+        for suit, properties in SUITS.items():
             if properties["id"] == _id:
                 return cls(suit)
 
@@ -99,38 +95,40 @@ class Suit(enum.StrEnum):
 class Rank(enum.IntEnum):
     """
     A rank for a playing card.
+
+    Note that Ace is low in this implementation.
     """
 
-    ACE = enum.auto()
-    TWO = enum.auto()
-    THREE = enum.auto()
-    FOUR = enum.auto()
-    FIVE = enum.auto()
-    SIX = enum.auto()
-    SEVEN = enum.auto()
-    EIGHT = enum.auto()
-    NINE = enum.auto()
-    TEN = enum.auto()
-    JACK = enum.auto()
-    QUEEN = enum.auto()
-    KING = enum.auto()
+    ACE = 1
+    TWO = 2
+    THREE = 3
+    FOUR = 4
+    FIVE = 5
+    SIX = 6
+    SEVEN = 7
+    EIGHT = 8
+    NINE = 9
+    TEN = 10
+    JACK = 11
+    QUEEN = 12
+    KING = 13
 
-    def __init__(self, *args, **kwargs):  # noqa: signature required for __new__
-        assert self._get("_name")
-        assert self._get("_value")
+    @functools.total_ordering
+    def __lt__(self, other: Rank) -> bool:
+        return self.value < other.value
 
     def _get(self, _key: Any, /) -> Any:
         """
         Return the value of the key.
         """
-        return _RANKS[str(self.value)][_key]  # type: ignore
+        return RANKS[str(self.value)][_key]  # type: ignore
 
     @classmethod
     def from_id(cls, _id: str, /) -> Rank:
         """
         Return a ``Rank`` from its corresponding character.
         """
-        for rank, properties in _RANKS.items():
+        for rank, properties in RANKS.items():
             if properties["id"] == _id:
                 return cls(int(rank))
 
