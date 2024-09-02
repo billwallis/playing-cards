@@ -20,11 +20,12 @@ from typing import Any, Literal
 
 Colour = Literal["black", "red"]
 
+HERE = pathlib.Path(__file__).parent
 SUITS: dict[str, dict[str, str]] = tomllib.loads(
-    pathlib.Path("playing_cards/suits.toml").read_text(encoding="utf-8")
+    (HERE / "suits.toml").read_text(encoding="utf-8")
 )
 RANKS: dict[str, dict[str, str]] = tomllib.loads(
-    pathlib.Path("playing_cards/ranks.toml").read_text(encoding="utf-8")
+    (HERE / "ranks.toml").read_text(encoding="utf-8")
 )
 
 
