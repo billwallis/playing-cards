@@ -241,21 +241,21 @@ class Deck:
         """
         return self._take_card_by_id(_id) if _id else self.cards.pop()
 
-    def _take_card_by_id(self, id_: str) -> Card:
+    def _take_card_by_id(self, _id: str) -> Card:
         """
         Pop the card ``id_`` from the deck.
 
-        :param id_: The ID of the card to take.
+        :param _id: The ID of the card to take.
 
         :return: The card taken from the deck.
 
         :raises KeyError: If the card has already been removed from the deck.
         """
         for i, card in enumerate(self.cards):
-            if str(card) == id_:
+            if str(card) == _id:
                 return self.cards.pop(i)
 
-        raise KeyError(f"The card with key '{id_}' is not in the deck")
+        raise KeyError(f"The card with key '{_id}' is not in the deck")
 
 
 class Decks(Deck):

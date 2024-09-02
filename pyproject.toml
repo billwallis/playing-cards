@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "playing-cards"
-version = "0.0.0"
+version = "0.0.1"
 description = "Playing cards from the French-suited, standard 52-card pack."
 authors = ["Bilbottom"]
 readme = "README.md"

@@ -1,5 +1,5 @@
 """
-Test the ``playing_cards`` package.
+Test the ``playing_cards.Decks`` class.
 """
 
 import pytest
@@ -40,7 +40,7 @@ def test__decks__card_cannot_be_taken_from_empty_deck():
 
 
 @pytest.mark.parametrize(
-    "key, card",
+    "id_, card",
     [
         ("AC", Card(Rank.ACE, Suit.CLUB)),
         ("2S", Card(Rank.TWO, Suit.SPADE)),
@@ -48,12 +48,12 @@ def test__decks__card_cannot_be_taken_from_empty_deck():
         ("KD", Card(Rank.KING, Suit.DIAMOND)),
     ],
 )
-def test__decks__cards_can_be_taken_by_id(key: str, card: Card):
+def test__decks__cards_can_be_taken_by_id(id_: str, card: Card):
     """
-    Test the ``Deck._take_card_by_key()`` method.
+    Test that cards can be taken by ID.
     """
     deck = Decks(2)
-    taken_card = deck.take_card(key)
+    taken_card = deck.take_card(id_)
     assert len(deck) == 103
     assert taken_card == card
     assert taken_card in deck
@@ -61,7 +61,7 @@ def test__decks__cards_can_be_taken_by_id(key: str, card: Card):
 
 def test__decks__multiple_cards_can_be_taken_by_id():
     """
-    Test the ``Deck._take_card_by_key()`` method.
+    Test that cards can be taken multiple times by their ID.
     """
     key = "AS"
     card = Card.from_id(key)
@@ -80,13 +80,15 @@ def test__decks__multiple_cards_can_be_taken_by_id():
 
 def test__decks__card_cannot_be_taken_by_id_if_it_is_not_in_the_deck():
     """
-    Test the ``Deck._take_card_by_key()`` method.
+    Test that cards cannot be taken by ID if they are not in the deck.
     """
+    key = "AS"
     deck = Decks(2)
-    deck.take_card("AS")
-    deck.take_card("AS")
+
+    deck.take_card(key)
+    deck.take_card(key)
     with pytest.raises(KeyError):
-        deck.take_card("AS")
+        deck.take_card(key)
 
 
 def test__decks__can_be_reset():

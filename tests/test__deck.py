@@ -1,5 +1,5 @@
 """
-Test the ``playing_cards`` package.
+Test the ``playing_cards.Deck`` class.
 """
 
 import pytest
@@ -40,7 +40,7 @@ def test__deck__card_cannot_be_taken_from_empty_deck():
 
 
 @pytest.mark.parametrize(
-    "key, card",
+    "id_, card",
     [
         ("AC", Card(Rank.ACE, Suit.CLUB)),
         ("2S", Card(Rank.TWO, Suit.SPADE)),
@@ -48,12 +48,12 @@ def test__deck__card_cannot_be_taken_from_empty_deck():
         ("KD", Card(Rank.KING, Suit.DIAMOND)),
     ],
 )
-def test__deck__cards_can_be_taken_by_id(key: str, card: Card):
+def test__deck__cards_can_be_taken_by_id(id_: str, card: Card):
     """
     Test that cards can be taken by ID.
     """
     deck = Deck()
-    taken_card = deck.take_card(key)
+    taken_card = deck.take_card(id_)
     assert len(deck) == 51
     assert taken_card == card
     assert taken_card not in deck

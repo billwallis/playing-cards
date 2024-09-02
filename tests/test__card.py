@@ -1,5 +1,5 @@
 """
-Test the ``playing_cards`` package.
+Test the ``playing_cards.Card`` class.
 """
 
 import itertools
