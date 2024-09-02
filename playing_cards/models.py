@@ -4,10 +4,7 @@ Define the cards and decks.
 A deck in the traditional sense is a collection of 52 playing cards from
 the French-suited, standard 52-card pack.
 
-A ``Deck`` in this module is ``n`` sets of decks (making it a slight
-misnomer), where a ``Card`` class represents each playing card.
-
-There are currently no Joker cards in the ``Card`` class.
+There are currently no Joker cards.
 """
 
 from __future__ import annotations
@@ -259,3 +256,30 @@ class Deck:
                 return self.cards.pop(i)
 
         raise KeyError(f"The card with key '{id_}' is not in the deck")
+
+
+class Decks(Deck):
+    """
+    A set of multiple decks of cards.
+    """
+
+    def __init__(self, n: int):
+        """
+        Return a set of ``n`` decks of cards.
+        """
+        self.number_of_decks = n
+        super().__init__()
+
+    def reset(self) -> None:
+        """
+        Reset the decks to have all cards in them, then shuffle them.
+        """
+        rank: Rank  # noqa: F842
+        suit: Suit  # noqa: F842
+        self.cards = []
+        for _ in range(self.number_of_decks):
+            self.cards.extend(
+                Card(rank, suit) for rank, suit in itertools.product(Rank, Suit)
+            )
+
+        self.shuffle()
