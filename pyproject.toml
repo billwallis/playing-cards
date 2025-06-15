@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "playing-cards"
 version = "0.0.3"
 description = "Playing cards from the French-suited, standard 52-card pack."
-authors = [{name = "Bilbottom"}]
+authors = [{name = "billwallis"}]
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = []
