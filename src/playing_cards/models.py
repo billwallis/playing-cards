@@ -149,11 +149,11 @@ class Card:
     rank: Rank
     suit: Suit
 
-    def __init__(self, rank: Rank, suit: Suit):
+    def __init__(self, rank: Rank, suit: Suit) -> None:
         self.rank = rank
         self.suit = suit
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.rank.id + self.suit.id
 
     @classmethod
@@ -196,20 +196,20 @@ class Deck:
 
     cards: list[Card]
 
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Return a ``Deck`` with 52 cards.
         """
         self.cards = []
         self.reset()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "Deck()"
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.cards)
 
-    def __getitem__(self, position: int):
+    def __getitem__(self, position: int) -> Card:
         return self.cards[position]
 
     def reset(self) -> None:
@@ -264,7 +264,7 @@ class Decks(Deck):
     A set of multiple decks of cards.
     """
 
-    def __init__(self, n: int):
+    def __init__(self, n: int) -> None:
         """
         Return a set of ``n`` decks of cards.
         """
